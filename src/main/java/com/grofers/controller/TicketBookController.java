@@ -6,17 +6,19 @@ import com.grofers.entity.Tickets;
 import com.grofers.services.TicketBookService;
 import com.grofers.util.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.grofers.util.ResponseHelper.getErrorResponse;
+import static com.grofers.util.ResponseHelper.getSuccessResponse;
 
 /**
  * Resource class for all the REST endpoint
@@ -35,7 +37,11 @@ public class TicketBookController {
      * @return the User created with their Id
      */
     @PostMapping("loginSignup")
-    public ResponseEntity<Users> createUser(@RequestBody Users users) {
+    public ResponseEntity createUser(@RequestBody Users users) {
+
+        if(Objects.isNull(users.getMobileNo()) || Objects.isNull(users.getName())) {
+            return getErrorResponse("Invalid params", HttpStatus.BAD_REQUEST);
+        }
         Users user = service.createUser(users);
         return new ResponseEntity<Users>(user, HttpStatus.CREATED);
     }
@@ -49,12 +55,12 @@ public class TicketBookController {
     @PostMapping("createTicket")
     public ResponseEntity<ResponseHelper> createTicket(@RequestBody Users users) {
 
+        if (Objects.isNull(users.getId())) {
+            return getErrorResponse("Enter a valid UserId", HttpStatus.BAD_REQUEST);
+        }
         Tickets ticket = service.createTicket(users);
-        return Objects.isNull(ticket) ? ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseHelper.getInstance()
-                .getResponse("User Does not Exist", true)) : ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseHelper.getInstance()
-                        .getResponse("Ticket has been successfully created with Id = " + ticket.getTicketId(), false));
-
+        return Objects.isNull(ticket) ? getErrorResponse("User Does not Exist", HttpStatus.BAD_REQUEST) : ResponseEntity
+                .status(HttpStatus.CREATED).body(getSuccessResponse("Ticket has been successfully created with Id = " + ticket.getTicketId(), false));
     }
 
     /**
@@ -65,6 +71,10 @@ public class TicketBookController {
      */
     @PostMapping("takePart")
     public ResponseEntity<ResponseHelper> takePartInContest(@RequestBody Tickets tickets) {
+
+        if (Objects.isNull(tickets.getTicketId()) || Objects.isNull(tickets.getId()) || Objects.isNull(tickets.getContestName())) {
+            return getErrorResponse("Params missing", HttpStatus.BAD_REQUEST);
+        }
         return service.takePartInContest(tickets);
     }
 
@@ -74,7 +84,7 @@ public class TicketBookController {
      * @return the list of contests
      */
     @GetMapping("upcomingContest")
-    public ResponseEntity<Map<String, String>> getUpComingContest() {
+    public ResponseEntity<Map<Date, String>> getUpComingContest() {
         return ResponseEntity.status(HttpStatus.OK).body(service.getUpComingContest());
     }
 
@@ -86,6 +96,17 @@ public class TicketBookController {
     @GetMapping("lastWeekWinners")
     public ResponseEntity<Map<String, String>> getLastWeekWinners() {
         return ResponseEntity.status(HttpStatus.OK).body(service.getLastWeekWinners());
+    }
+
+    /**
+     * To find the winner of a contest
+     *
+     * @param contest the name of the contest
+     * @return the winner
+     */
+    @GetMapping("findWinner")
+    public ResponseEntity<ResponseHelper> findWinner(@RequestParam("contest") String contest) {
+        return service.findWinnerOfContest(contest);
     }
 
 }

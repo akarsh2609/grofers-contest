@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,12 +32,12 @@ public class ContestDao {
      *
      * @return the Map of Contest EndTime and their prizes
      */
-    public Map<String, String> upComingContests() {
+    public Map<Date, String> upComingContests() {
         Timestamp currentTime = Timestamp.from(Instant.now());
         Timestamp endTime = new Timestamp(currentTime.getTime() + 7 * 24 * 60 * 60 * 1000);
         String hql = String.format("SELECT * FROM Contest WHERE END_TIME BETWEEN '%s' AND '%s'",
                 currentTime, endTime);
-        return (Map<String, String>) entityManager.
+        return (Map<Date, String>) entityManager.
                 createNativeQuery(hql, Contest.class).getResultList().stream().collect(Collectors.
                 toMap(Contest::getEndTime, Contest::getContestPrize));
     }
@@ -57,13 +58,15 @@ public class ContestDao {
     }
 
     /**
-     * to find the list of contests ending till time
+     * to find the list of contests ended last day from now
      *
-     * @param time the endTime
      * @return the list of
      */
-    public List<Contest> findContestsEnding(Timestamp time) {
-        String hql = String.format("SELECT * FROM Contest WHERE END_TIME < '%s'", time);
+    public List<Contest> findContestsEnding() {
+        Timestamp endTime = Timestamp.from(Instant.now());
+        Timestamp startTime = new Timestamp(endTime.getTime() - 24 * 60 * 60 * 1000);
+        String hql = String.format("SELECT * FROM Contest WHERE END_TIME BETWEEN '%s' AND '%s'",
+                startTime, endTime);
         return entityManager.createNativeQuery(hql, Contest.class).getResultList();
     }
 

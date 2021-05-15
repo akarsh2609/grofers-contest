@@ -14,9 +14,12 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.grofers.util.ResponseHelper.getErrorResponse;
+import static com.grofers.util.ResponseHelper.getSuccessResponse;
 
 /**
  * Service layer for all the API's
@@ -47,7 +50,7 @@ public class TicketBookService {
     /**
      * To create a ticket corresponding to a contest
      *
-     * @param ticket the Ticket object containing userId
+     * @param newUser the Ticket object containing userId
      * @return the Ticket with a ticketId
      */
     public Tickets createTicket(Users newUser) {
@@ -61,39 +64,30 @@ public class TicketBookService {
     /**
      * To register in a contest against a corresponding ticket
      *
-     * @param ticket
+     * @param ticket the ticket
      * @return Success response if all the details are valid
      */
     public ResponseEntity<ResponseHelper> takePartInContest(Tickets ticket) {
         Tickets verifyTicket = ticketsDao.takePart(ticket);
         if (ticketsDao.checkUserIsAlreadyPartOfContest(ticket)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-                    body(ResponseHelper.getInstance().
-                            getResponse("Can not take part in the same contest again", true));
+            return getErrorResponse("Can not take part in the same contest again", HttpStatus.OK);
         }
         if (Objects.isNull(verifyTicket)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-                    body(ResponseHelper.getInstance().
-                            getResponse("the ticket does not belong to the user", true));
+            return getErrorResponse("the ticket does not belong to the user", HttpStatus.OK);
         }
         if (!Objects.isNull(verifyTicket.getContestName())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-                    body(ResponseHelper.getInstance().
-                            getResponse("the ticket has already been used", true));
+            return getErrorResponse("the ticket has already been used", HttpStatus.OK);
         }
         Contest contest = contestDao.findContest(ticket.getContestName());
         if (Objects.isNull(contest)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-                    body(ResponseHelper.getInstance().getResponse("Contest Not Found", true));
+            return getErrorResponse("Contest Not Found", HttpStatus.OK);
         }
         if (contest.getEndTime().before(Timestamp.from(Instant.now()))) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-                    body(ResponseHelper.getInstance().
-                            getResponse("Sorry! the Contest has already Ended", true));
+            return getErrorResponse("Sorry! the Contest has already Ended", HttpStatus.OK);
         }
         ticketsDao.updateTicket(verifyTicket, ticket.getContestName());
         return ResponseEntity.status(HttpStatus.CREATED).
-                body(ResponseHelper.getInstance().getResponse(String.format("Successfully taken part in the %s",
+                body(getSuccessResponse(String.format("Successfully taken part in the %s",
                         ticket.getContestName()), false));
     }
 
@@ -102,7 +96,7 @@ public class TicketBookService {
      *
      * @return the Contest EndTime along with their prize.
      */
-    public Map<String, String> getUpComingContest() {
+    public Map<Date, String> getUpComingContest() {
         return contestDao.upComingContests();
     }
 
@@ -113,5 +107,26 @@ public class TicketBookService {
      */
     public Map<String, String> getLastWeekWinners() {
         return contestDao.lastWeekWinners();
+    }
+
+    /**
+     * This method finds the winer of the contest
+     *
+     * @param contest the contest name
+     * @return the response
+     */
+    public ResponseEntity<ResponseHelper> findWinnerOfContest(String contest) {
+
+        Contest contestObj = contestDao.findContest(contest);
+        if (Objects.isNull(contestObj)) {
+            return getErrorResponse("Contest not found", HttpStatus.OK);
+        }
+        if (contestObj.getEndTime().after(Date.from(Instant.now()))) {
+            return getErrorResponse("Contest has not ended yet", HttpStatus.OK);
+        }
+        String winner = contestObj.getWinner();
+        winner = winner.isEmpty() ? (Objects.isNull(ticketsDao.findWinner(contest)) ? "" :
+                userDao.getUserNameById(ticketsDao.findWinner(contest))) : contestObj.getWinner();
+        return ResponseEntity.status(HttpStatus.OK).body(getSuccessResponse(winner, false));
     }
 }

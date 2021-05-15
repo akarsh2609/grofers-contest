@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * Entity for User table
@@ -21,7 +22,7 @@ public class Users implements Serializable {
     private String name;
 
     @Column(name = "mobile")
-    private Integer mobileNo;
+    private BigInteger mobileNo;
 
     public String getId() {
         return id;
@@ -39,11 +40,11 @@ public class Users implements Serializable {
         this.name = name;
     }
 
-    public Integer getMobileNo() {
+    public BigInteger getMobileNo() {
         return mobileNo;
     }
 
-    public void setMobileNo(Integer mobileNo) {
+    public void setMobileNo(BigInteger mobileNo) {
         this.mobileNo = mobileNo;
     }
 

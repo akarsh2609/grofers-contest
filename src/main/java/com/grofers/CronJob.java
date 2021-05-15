@@ -33,12 +33,13 @@ public class CronJob {
 
     @Scheduled(cron = "5 5 8 * * ?")
     public void cronMethod() {
-        Timestamp endTime = Timestamp.from(Instant.now());
-        List<Contest> contestList = contestDao.findContestsEnding(endTime);
+        List<Contest> contestList = contestDao.findContestsEnding();
         for (Contest contest : contestList) {
-            String winner = ticketsDao.findWinner(contest.getContestName());
-            if (Objects.nonNull(winner)) {
-                contestDao.updateWinner(contest.getContestName(), usersDao.getUserNameById(winner));
+            if (contest.getWinner().isEmpty()) {
+                String winnerId = ticketsDao.findWinner(contest.getContestName());
+                if (Objects.nonNull(winnerId)) {
+                    contestDao.updateWinner(contest.getContestName(), usersDao.getUserNameById(winnerId));
+                }
             }
         }
 
