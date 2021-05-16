@@ -26,11 +26,11 @@
 #### Endpoint | HTTP Method | CRUD Method | Result
 
 ###### `gamingservice/loginSignup` | POST | Create | Create a single user
-###### `gamingservice/createTicket`| POST | Create | Create a new Ticket for a user
-###### `gamingservice/takePart` | POST | Create | Map the user ticket to a contest
-###### `gamingservice/upcomingContest` | GET | Show | Show the upcoming contests for a week
-###### `gamingservice/lastWeekWinners` | GET | Show | Show all the contest winners in last 1 week
-###### `gamingservice/findWinner?contest=[CONTEST_NAME]` | GET | Show | Finds the winner of a single contest
+###### `gamingservice/ticket`| POST | Create | Create a new Ticket for a user
+###### `gamingservice/contest/participate` | POST | Create | Map the user ticket to a contest
+###### `gamingservice/contest/upcoming` | GET | Show | Show the upcoming contests for a week
+###### `gamingservice/contest/lastWeekWinners` | GET | Show | Show all the contest winners in last 1 week
+###### `gamingservice/contest/winner?name=[CONTEST_NAME]` | GET | Show | Finds the winner of a single contest
 
 ### cURL calls
 
@@ -42,20 +42,20 @@
 Payload
 {
 "name": "akarsh singhal",
-"mobileNo": 8077216889
+"mobileNo": 1234567890
 }
 
 OUTPUT
 {
     "id": "2c62f0fa-1c89-4344-af7d-5d7d0e32fe2e",
     "name": "akarsh singhal",
-    "mobileNo": 8077216889
+    "mobileNo": 1234567890
 }
 ```
 #### 2. To create a ticket:
 ##### this API creates a ticket for a user, a single user can buy multiple tickets
 ```
-    http://localhost:8080/gamingservice/createTicket
+    http://localhost:8080/gamingservice/ticket
     
 Payload
 {
@@ -72,7 +72,7 @@ Output
 #### 3. To take Part in a Contest
 ##### This API helps to link a ticket to a particular contest, a user can register to a contest only once
 ```
-    http://localhost:8080/gamingservice/takePart
+    http://localhost:8080/gamingservice/contest/participate
 
 Payload
 {
@@ -90,7 +90,7 @@ Output
 #### 4. to view the upcoming contests for a week
 ##### This API helps in viewing the upcoming contests Ending date and their prize
 ```
-    http://localhost:8080/gamingservice/upcomingContest
+    http://localhost:8080/gamingservice/contest/upcoming
     
 Output
 {
@@ -104,7 +104,7 @@ Output
 #### 5. To view the winners of the last week contests
 ##### This API gets the past week contest and their winners
 ```
-    http://localhost:8080/gamingservice/lastWeekWinners
+    http://localhost:8080/gamingservice/contest/lastWeekWinners
 
 Output
 {
@@ -116,7 +116,7 @@ Output
 #### 6. To find the winner of a particular contest
 ##### This API finds the winner of a contest passed as query param
 ```
-    http://localhost:8080/gamingservice/findWinner?contest=Contest-15/May
+    http://localhost:8080/gamingservice/contest/winner?name=Contest-15/May
 
 Output
 {

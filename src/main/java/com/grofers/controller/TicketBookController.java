@@ -52,7 +52,7 @@ public class TicketBookController {
      * @param users the user object containing userId
      * @return the success/failure response along with ticketId
      */
-    @PostMapping("createTicket")
+    @PostMapping("ticket")
     public ResponseEntity<ResponseHelper> createTicket(@RequestBody Users users) {
 
         if (Objects.isNull(users.getId())) {
@@ -69,7 +69,7 @@ public class TicketBookController {
      * @param tickets the ticket containing ticketId and userId
      * @return success/failure response
      */
-    @PostMapping("takePart")
+    @PostMapping("contest/participate")
     public ResponseEntity<ResponseHelper> takePartInContest(@RequestBody Tickets tickets) {
 
         if (Objects.isNull(tickets.getTicketId()) || Objects.isNull(tickets.getId()) || Objects.isNull(tickets.getContestName())) {
@@ -83,7 +83,7 @@ public class TicketBookController {
      *
      * @return the list of contests
      */
-    @GetMapping("upcomingContest")
+    @GetMapping("contest/upcoming")
     public ResponseEntity<Map<Date, String>> getUpComingContest() {
         return ResponseEntity.status(HttpStatus.OK).body(service.getUpComingContest());
     }
@@ -93,7 +93,7 @@ public class TicketBookController {
      *
      * @return the list of winners along with contest name
      */
-    @GetMapping("lastWeekWinners")
+    @GetMapping("contest/lastWeekWinners")
     public ResponseEntity<Map<String, String>> getLastWeekWinners() {
         return ResponseEntity.status(HttpStatus.OK).body(service.getLastWeekWinners());
     }
@@ -101,12 +101,12 @@ public class TicketBookController {
     /**
      * To find the winner of a contest
      *
-     * @param contest the name of the contest
+     * @param contestName the name of the contest
      * @return the winner
      */
-    @GetMapping("findWinner")
-    public ResponseEntity<ResponseHelper> findWinner(@RequestParam("contest") String contest) {
-        return service.findWinnerOfContest(contest);
+    @GetMapping("contest/winner")
+    public ResponseEntity<ResponseHelper> findWinner(@RequestParam("name") String contestName) {
+        return service.findWinnerOfContest(contestName);
     }
 
 }

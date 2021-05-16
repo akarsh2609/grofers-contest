@@ -24,10 +24,10 @@ CREATE TABLE `users` (
 
 
 CREATE TABLE `tickets` (
-   `USER_ID` varchar(50) ,
+   `USER_ID` varchar(50) NOT NULL ,
    `CONTEST` varchar(255) DEFAULT NULL,
-   `TICKET_ID` varchar(50),
-   PRIMARY KEY (USER_ID, TICKET_ID)
+   `TICKET_ID` varchar(50) PRIMARY KEY,
+   UNIQUE (USER_ID, CONTEST)
 );
 
 -- Table structure for table `contest`
