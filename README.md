@@ -1,4 +1,4 @@
-# Grofers Lucky Draw Game
+# Akarsh Lucky Draw Game
 ### This Project allows users to get Lucky Draw Raffle tickets and use one lucky draw raffle ticket to participate in a lucky draw game, also a user can view upcoming events and winners of the previous week contest or can find the winner of a particular contest.
 ```
 ```
@@ -8,7 +8,7 @@
 #### - MySql Server
 
 #### 1. Clone the project from github using the following command
-```   git clone https://github.com/akarsh2609/grofers-contest.git ```
+```   git clone https://github.com/akarsh2609/akarsh-contest.git ```
 #### 2. you can import the project in IntelliJ, Eclipse, NetBeans as a maven project
 #### 3. Import src/main/java/resources/data.sql into MySQL database
 

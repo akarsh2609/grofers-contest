@@ -4,15 +4,15 @@
 --
 -- Host: localhost
 --
--- Database: `grofers_contest`
+-- Database: `akarsh_contest`
 --
 
 -- --------------------------------------------------------
 
 -- Table structure for table `users`
 
-create database grofers_contest;
-use grofers_contest;
+create database akarsh_contest;
+use akarsh_contest;
 
 CREATE TABLE `users` (
    `id` varchar(50) NOT NULL PRIMARY KEY,

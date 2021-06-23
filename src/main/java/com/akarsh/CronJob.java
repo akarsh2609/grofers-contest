@@ -1,16 +1,14 @@
-package com.grofers;
+package com.akarsh;
 
-import com.grofers.dao.ContestDao;
-import com.grofers.dao.UsersDao;
-import com.grofers.dao.TicketsDao;
-import com.grofers.entity.Contest;
+import com.akarsh.dao.ContestDao;
+import com.akarsh.dao.UsersDao;
+import com.akarsh.dao.TicketsDao;
+import com.akarsh.entity.Contest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 

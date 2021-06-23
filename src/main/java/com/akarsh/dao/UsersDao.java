@@ -1,12 +1,11 @@
-package com.grofers.dao;
+package com.akarsh.dao;
 
-import com.grofers.entity.Users;
+import com.akarsh.entity.Users;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

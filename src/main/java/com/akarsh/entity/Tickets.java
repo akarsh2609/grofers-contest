@@ -1,4 +1,4 @@
-package com.grofers.entity;
+package com.akarsh.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

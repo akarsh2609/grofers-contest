@@ -1,6 +1,6 @@
-package com.grofers.dao;
+package com.akarsh.dao;
 
-import com.grofers.entity.Contest;
+import com.akarsh.entity.Contest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

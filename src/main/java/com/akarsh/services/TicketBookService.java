@@ -1,12 +1,12 @@
-package com.grofers.services;
+package com.akarsh.services;
 
-import com.grofers.dao.ContestDao;
-import com.grofers.dao.UsersDao;
-import com.grofers.dao.TicketsDao;
-import com.grofers.entity.Contest;
-import com.grofers.entity.Users;
-import com.grofers.entity.Tickets;
-import com.grofers.util.ResponseHelper;
+import com.akarsh.dao.ContestDao;
+import com.akarsh.dao.UsersDao;
+import com.akarsh.dao.TicketsDao;
+import com.akarsh.entity.Contest;
+import com.akarsh.entity.Users;
+import com.akarsh.entity.Tickets;
+import com.akarsh.util.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.grofers.util.ResponseHelper.getErrorResponse;
-import static com.grofers.util.ResponseHelper.getSuccessResponse;
+import static com.akarsh.util.ResponseHelper.getErrorResponse;
+import static com.akarsh.util.ResponseHelper.getSuccessResponse;
 
 /**
  * Service layer for all the API's

@@ -1,8 +1,8 @@
-package com.grofers.dao;
+package com.akarsh.dao;
 
-import com.grofers.entity.TicketsPk;
-import com.grofers.entity.Users;
-import com.grofers.entity.Tickets;
+import com.akarsh.entity.TicketsPk;
+import com.akarsh.entity.Users;
+import com.akarsh.entity.Tickets;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.grofers</groupId>
+	<groupId>com.akarsh</groupId>
 	<artifactId>lucky-draw-contest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>grofers-lucky-draw-game</name>
+	<name>akarsh-lucky-draw-game</name>
 	<description>Lucky Draw Gaming Service</description>
 
 	<parent>

@@ -1,4 +1,4 @@
-package com.grofers.entity;
+package com.akarsh.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +17,7 @@ public class Users implements Serializable {
     @Id
     @Column(name = "id")
     private String id;
+
 
     @Column(name = "name")
     private String name;
